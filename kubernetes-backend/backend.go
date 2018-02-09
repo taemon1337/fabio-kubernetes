@@ -82,6 +82,14 @@ func (b *be) WriteManual(path string, value string, version uint64) (ok bool, er
 func (b *be) WatchServices() chan string {
 	log.Printf("[INFO] kubernetes: Watching all Kubernetes services")
 
+  /*
+   * Kubernetes Api : http://kubernetes-master/api/v1/services
+   *   - request all services from k8 api
+   *   - filter by some special label (like 'fabio')
+   *   - add fabio route for '{service}.{namespace}.my-domain.com' to '{service}.{namespace}.svc.cluster.local'
+   *   - delete any existing routes not found in k8 services (or a complete overwrite of config)
+   */
+
 	svc := make(chan string)
 	go watchServices(b.c, b.cfg)
 	return svc
